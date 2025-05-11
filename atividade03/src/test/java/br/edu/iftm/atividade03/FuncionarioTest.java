@@ -221,7 +221,7 @@ class FuncionarioTest {
     public void testarSetValorHoraComValorInvalidoInferior() {
         //assign
         Funcionario funcionario = new Funcionario();
-        double valorHoraInvalido = VALOR_HORA_INVALIDO_INFERIOR;
+        double valorHoraInvalido = 14;
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
@@ -241,7 +241,7 @@ class FuncionarioTest {
     public void testarSetValorHoraComValorInvalidoSuperior() {
         //assign
         Funcionario funcionario = new Funcionario();
-        double valorHoraInvalido = VALOR_HORA_INVALIDO_SUPERIOR;
+        double valorHoraInvalido = 152;
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
