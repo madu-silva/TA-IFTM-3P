@@ -14,8 +14,6 @@ class FuncionarioTest {
     private static final double VALOR_HORA = 20;
     private static final double VALOR_HORA_INVALIDO_INFERIOR = 15.17;
     private static final double VALOR_HORA_INVALIDO_SUPERIOR = 151.81;
-    private static final double SALARIO_MINIMO = 1518.00;
-    private static final double SALARIO_TETO = 10000.00;
     private static final String MENSAGEM_ERRO_HORAS_INFERIOR = "Horas inválidas, as horas semanais trabalhadas não podem ser inferiores a 5 horas.";
     private static final String MENSAGEM_ERRO_HORAS_SUPERIOR = "Horas inválidas, as horas semanais trabalhadas não podem ser superiores a 40 horas.";
     private static final String MENSAGEM_ERRO_VALOR_HORA_INFERIOR = "Valor por hora inválida, o valor por hora deve ser no mínimo R$15,18.";
@@ -34,7 +32,7 @@ class FuncionarioTest {
 
         //act
         Funcionario funcionario = new Funcionario(NOME, horasTrabalhadasValida, VALOR_HORA);
-        String saidaObtida = funcionario.getHorasTrabalhadas();
+        int saidaObtida = funcionario.getHorasTrabalhadas();
 
         //assert
         assertEquals(saidaEsperada, saidaObtida);
@@ -93,7 +91,7 @@ class FuncionarioTest {
 
         //act
         Funcionario funcionario = new Funcionario(NOME, HORAS_TRABALHADAS, valorHoraValido);
-        String saidaObtida = funcionario.getValorHora();
+        double saidaObtida = funcionario.getValorHora();
 
         //assert
         assertEquals(saidaEsperada, saidaObtida);
@@ -281,7 +279,7 @@ class FuncionarioTest {
     @Test
     public void testarCalculoPagamentoAbaixoDoSalarioMinimo() {
         //assign
-        Funcionario funcionario = new Funcionario(NOME, 20, 5.0);
+        Funcionario funcionario = new Funcionario(NOME, 5, 20);
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, funcionario::calcularPagamento);
@@ -292,13 +290,13 @@ class FuncionarioTest {
 
     /**
      * <p><b>Cenário:</b> Testa o cálculo do pagamento invalido, fora do limite superior</p>
-     * <p><b>Entrada:</b> horasTrabalhadas = 160, valorHora = 100 </p>
+     * <p><b>Entrada:</b> horasTrabalhadas = 40, valorHora = 100 </p>
      * <p><b>Saída esperada:</b> "O pagamento não pode ultrapassar o teto de R$10000,00." </p>
      */
     @Test
     public void testarCalculoPagamentoAcimaDoTeto() {
         //assign
-        Funcionario funcionario = new Funcionario(NOME, 160, 100.0);
+        Funcionario funcionario = new Funcionario(NOME, 40, 100.0);
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, funcionario::calcularPagamento);

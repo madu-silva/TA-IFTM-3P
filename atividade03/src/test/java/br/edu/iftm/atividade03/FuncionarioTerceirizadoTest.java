@@ -12,8 +12,6 @@ class FuncionarioTerceirizadoTest {
     private static final double DESPESAS_ADICIONAIS = 100;
     private static final double DESPESAS_ADICIONAIS_INVALIDO_SUPERIOR = 1001;
     private static final String MENSAGEM_ERRO_DESPESAS_ADICIONAIS_SUPERIOR = "Despesas adicionais inválidas, o valor deve ser no máximo R$1000,00.";
-    private static final double SALARIO_MINIMO = 1518.00;
-    private static final double SALARIO_TETO = 10000.00;
 
     /**
      * <p><b>Cenário:</b> Testa o construtor com um valor de despesas adicionais válida, no meio dos limites</p>
@@ -66,7 +64,7 @@ class FuncionarioTerceirizadoTest {
         double saidaEsperada = DESPESAS_ADICIONAIS;
 
         //act
-        FuncionarioTerceirizado funcionarioTerceirizado = new FuncionarioTerceirizado(NOME, HORAS_TRABALHADAS, VALOR_HORA);
+        FuncionarioTerceirizado funcionarioTerceirizado = new FuncionarioTerceirizado();
         funcionarioTerceirizado.setDespesasAdicionais(despesasAdicionaisValida);
         double saidaObtida = funcionarioTerceirizado.getDespesasAdicionais();
 
@@ -85,7 +83,7 @@ class FuncionarioTerceirizadoTest {
         double despesasAdicionaisInvalida = DESPESAS_ADICIONAIS_INVALIDO_SUPERIOR;
 
         //act & assert
-        FuncionarioTerceirizado funcionarioTerceirizado = new FuncionarioTerceirizado(NOME, HORAS_TRABALHADAS, VALOR_HORA);
+        FuncionarioTerceirizado funcionarioTerceirizado = new FuncionarioTerceirizado();
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 funcionarioTerceirizado.setDespesasAdicionais(despesasAdicionaisInvalida)
         );
@@ -97,7 +95,7 @@ class FuncionarioTerceirizadoTest {
 
     /**
      * <p><b>Cenário:</b> Testa o cálculo do pagamento para um funcionário terceirizado com despesas adicionais válidas.</p>
-     * <p><b>Entrada:</b> horasTrabalhadas = 40, valorHora = 20.0, despesasAdicionais = 100.0</p>
+     * <p><b>Entrada:</b> horasTrabalhadas = 40, valorHora = 20,0, despesasAdicionais = 100,0</p>
      * <p><b>Saída esperada:</b> 3310</p>
      */
     @Test
@@ -115,13 +113,13 @@ class FuncionarioTerceirizadoTest {
 
     /**
      * <p><b>Cenário:</b> Testa o cálculo do pagamento para um funcionário terceirizado quando o valor está abaixo do salário mínimo.</p>
-     * <p><b>Entrada:</b> horasTrabalhadas = 20, valorHora = 5.0, despesasAdicionais = 100.0</p>
+     * <p><b>Entrada:</b> horasTrabalhadas = 5, valorHora = 20,0, despesasAdicionais = 100,0</p>
      * <p><b>Saída esperada:</b> Exceção com mensagem "O pagamento deve ser maior ou igual ao salário mínimo de R$1518,00."</p>
      */
     @Test
     public void testarCalculoPagamentoAbaixoDoSalarioMinimo() {
         //assign
-        FuncionarioTerceirizado funcionario = new FuncionarioTerceirizado(NOME, 20, 5.0, DESPESAS_ADICIONAIS);
+        FuncionarioTerceirizado funcionario = new FuncionarioTerceirizado(NOME, 5, 20.0, DESPESAS_ADICIONAIS);
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, funcionario::calcularPagamento);
@@ -132,13 +130,13 @@ class FuncionarioTerceirizadoTest {
 
     /**
      * <p><b>Cenário:</b> Testa o cálculo do pagamento para um funcionário terceirizado quando o valor excede o teto permitido.</p>
-     * <p><b>Entrada:</b> horasTrabalhadas = 160, valorHora = 100.0, despesasAdicionais = 1000.0</p>
+     * <p><b>Entrada:</b> horasTrabalhadas = 40, valorHora = 100,00, despesasAdicionais = 1000,00</p>
      * <p><b>Saída esperada:</b> Exceção com mensagem "O pagamento não pode ultrapassar o teto de R$10000,00."</p>
      */
     @Test
     public void testarCalculoPagamentoAcimaDoTeto() {
         //assign
-        FuncionarioTerceirizado funcionario = new FuncionarioTerceirizado(NOME, 160, 100.0, 1000.0);
+        FuncionarioTerceirizado funcionario = new FuncionarioTerceirizado(NOME, 40, 100.0, 1000.0);
 
         //act & assert
         Exception exception = assertThrows(IllegalArgumentException.class, funcionario::calcularPagamento);
